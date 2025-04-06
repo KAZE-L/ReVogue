@@ -1,7 +1,3 @@
-# This is the Swagger API specification for the Second-hand Clothing Trading Platform
-# It documents all RESTful endpoints used in the platform, including product listing,
-# user authentication, shopping cart, ordering, chatbot interaction, and AI-based services
-
 openapi: 3.0.3
 info:
   title: Second-hand Clothing Trading Platform API
@@ -180,4 +176,4 @@ paths:
       summary: Get user's personal closet / favorites
       responses:
         '200':
-          description: Closet data returned
+          description: Closet data returned 
