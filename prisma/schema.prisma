@@ -14,65 +14,142 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products  Product[]
-  orders    Order[]
-  cart      Cart?
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String
+  name       String?
+  role       UserRole  @default(buyer)
+  googleId   String?   @map("google_id")
+  avatarUrl  String?   @map("avatar_url")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  products   Product[]  @relation("SellerProducts")
+  favorites  Favorite[]
+  cartItems  Cart[]
+  buyerOrders  Order[]    @relation("BuyerOrders")
+  sellerOrders Order[]    @relation("SellerOrders")
+  wardrobe   Wardrobe[]
+
+  @@map("users")
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
+  sellerId    Int           @map("seller_id")
   name        String
   description String
-  price       Float
+  price       Decimal
   category    String
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
-  cartItems   CartItem[]
+  styleTags   Json          @map("style_tags")
+  images      Json
+  status      ProductStatus @default(active)
+  viewCount   Int           @default(0) @map("view_count")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  
+  // Relations
+  seller      User          @relation("SellerProducts", fields: [sellerId], references: [id])
+  favorites   Favorite[]
+  cartItems   Cart[]
   orderItems  OrderItem[]
+  wardrobe    Wardrobe[]
+
+  @@map("products")
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  productId Int      @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("favorites")
 }
 
 model Cart {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @unique
-  user      User      @relation(fields: [userId], references: [id])
-  items     CartItem[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  productId Int      @map("product_id")
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 
-model CartItem {
-  id        Int     @id @default(autoincrement())
-  quantity  Int     @default(1)
-  cartId    Int
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  @@map("carts")
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
-  userId    Int
-  user      User        @relation(fields: [userId], references: [id])
-  items     OrderItem[]
-  status    String      @default("pending")
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id              Int           @id @default(autoincrement())
+  buyerId         Int           @map("buyer_id")
+  sellerId        Int           @map("seller_id")
+  totalAmount     Decimal       @map("total_amount")
+  status          OrderStatus   @default(pending)
+  paymentMethod   String        @map("payment_method")
+  shippingAddress String        @map("shipping_address")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  
+  // Relations
+  buyer           User          @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller          User          @relation("SellerOrders", fields: [sellerId], references: [id])
+  items           OrderItem[]
+
+  @@map("orders")
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  quantity  Int     @default(1)
-  orderId   Int
-  order     Order   @relation(fields: [orderId], references: [id])
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  productId Int      @map("product_id")
+  quantity  Int
+  price     Decimal
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Wardrobe {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  productId Int      @map("product_id")
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("wardrobe")
+}
+
+enum UserRole {
+  buyer
+  seller
+}
+
+enum ProductStatus {
+  active
+  sold
+  inactive
+}
+
+enum OrderStatus {
+  pending
+  paid
+  shipped
+  completed
+  cancelled
 }
