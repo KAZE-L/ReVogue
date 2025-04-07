@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 添加一些自定義的全局樣式 */
+@layer base {
+  /* 為所有元素添加一些基本樣式 */
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+}
+
+/* 自自定義的類別 */
+@layer components {
+  /* 這裏可以添加自定義的組件樣式 */
+}
+
+/* 自定義的實用工具 */
+@layer utilities {
+  /* 你可以在這裏添加一些額外的工具 */
+}
