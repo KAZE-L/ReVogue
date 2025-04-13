@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <title>ReVogue</title>
       </head>
       <body>
-        <Header /> {/* 顯示全局頭部 */}
+        <Header /> {/* 顯示全局Header */}
         <main className="p-6">{children}</main> {/* 這是頁面內容 */}
       </body>
     </html>

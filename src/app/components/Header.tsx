@@ -1,4 +1,3 @@
-// app/components/Header.tsx
 'use client'
 
 import Link from 'next/link'
@@ -13,7 +12,7 @@ export default function Header() {
 
       {/* 中間：導航欄 */}
       <nav className="flex space-x-8">
-        <Link href="/home" className="text-lg hover:text-gray-400">Home</Link>
+        <Link href="/" className="text-lg hover:text-gray-400">Home</Link>
         <Link href="/women" className="text-lg hover:text-gray-400">Women</Link>
         <Link href="/men" className="text-lg hover:text-gray-400">Men</Link>
       </nav>
