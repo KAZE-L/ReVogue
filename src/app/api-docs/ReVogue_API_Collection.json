@@ -1,0 +1,177 @@
+{
+  "info": {
+    "name": "ReVogue API Collection",
+    "description": "ReVogue電商平台API測試集合",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. 測試數據",
+      "item": [
+        {
+          "name": "創建測試數據",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/test/seed",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "test", "seed"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. 用戶認證",
+      "item": [
+        {
+          "name": "用戶登錄",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"test123\"\n}"
+            },
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/auth/login",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. 商品API",
+      "item": [
+        {
+          "name": "獲取商品列表",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/products",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "測試類別",
+                  "disabled": true
+                },
+                {
+                  "key": "keyword",
+                  "value": "測試",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "創建新商品",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"新測試商品\",\n  \"price\": 199.99,\n  \"description\": \"這是新測試商品\",\n  \"category\": \"測試類別\",\n  \"images\": [\"https://example.com/test.jpg\"],\n  \"sellerId\": 1\n}"
+            },
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/products",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. 購物車API",
+      "item": [
+        {
+          "name": "添加商品到購物車",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"productId\": 1,\n  \"quantity\": 1\n}"
+            },
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/cart",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "cart"]
+            }
+          }
+        },
+        {
+          "name": "獲取購物車內容",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/cart?userId=1",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "cart"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. 訂單API",
+      "item": [
+        {
+          "name": "創建新訂單",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartItems\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1\n    }\n  ],\n  \"paymentMethod\": \"credit_card\",\n  \"shippingAddress\": \"測試地址\",\n  \"buyerId\": 1\n}"
+            },
+            "url": {
+              "raw": "https://re-vogue.vercel.app/api/order",
+              "protocol": "https",
+              "host": ["re-vogue", "vercel", "app"],
+              "path": ["api", "order"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 

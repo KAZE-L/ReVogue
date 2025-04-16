@@ -1,11 +1,6 @@
-# API 測試指南
-
-## 1. 測試數據準備
-首先需要創建測試數據：
-
 ```bash
 # 使用 POST 方法訪問
-http://localhost:3000/api/test/seed
+https://re-vogue.vercel.app/api/test/seed
 
 # 預期返回：
 {
@@ -33,7 +28,7 @@ http://localhost:3000/api/test/seed
 ### 登錄
 ```bash
 # 使用 POST 方法訪問
-http://localhost:3000/api/auth/login
+https://re-vogue.vercel.app/api/auth/login
 
 # 請求體：
 {
@@ -55,7 +50,7 @@ http://localhost:3000/api/auth/login
 ### 獲取商品列表
 ```bash
 # 使用 GET 方法訪問
-http://localhost:3000/api/products
+https://re-vogue.vercel.app/api/products
 
 # 可選查詢參數：
 ?category=測試類別
@@ -77,7 +72,7 @@ http://localhost:3000/api/products
 ### 創建新商品
 ```bash
 # 使用 POST 方法訪問
-http://localhost:3000/api/products
+https://re-vogue.vercel.app/api/products
 
 # 請求體：
 {
@@ -103,7 +98,7 @@ http://localhost:3000/api/products
 ### 添加商品到購物車
 ```bash
 # 使用 POST 方法訪問
-http://localhost:3000/api/cart
+https://re-vogue.vercel.app/api/cart
 
 # 請求體：
 {
@@ -124,7 +119,7 @@ http://localhost:3000/api/cart
 ### 獲取購物車內容
 ```bash
 # 使用 GET 方法訪問
-http://localhost:3000/api/cart?userId=1
+https://re-vogue.vercel.app/api/cart?userId=1
 
 # 預期返回：
 {
@@ -147,7 +142,7 @@ http://localhost:3000/api/cart?userId=1
 ### 創建新訂單
 ```bash
 # 使用 POST 方法訪問
-http://localhost:3000/api/order
+https://re-vogue.vercel.app/api/order
 
 # 請求體：
 {
@@ -175,10 +170,3 @@ http://localhost:3000/api/order
     }
   ]
 }
-```
-
-## 注意事項
-1. 所有 API 都需要開發服務器運行（`npm run dev`）
-2. 測試前請確保已創建測試數據
-3. 使用 Postman 或其他 API 測試工具進行測試
-4. 所有 ID 值（userId, productId 等）請使用實際創建的測試數據中的 ID 
