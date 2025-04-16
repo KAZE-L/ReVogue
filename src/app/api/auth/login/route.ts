@@ -6,6 +6,11 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  // 避免在構建時執行
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
+    return NextResponse.json({ status: 'success', message: '構建中' });
+  }
+
   try {
     const { email, password } = await request.json();
 

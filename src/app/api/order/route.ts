@@ -4,8 +4,17 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+// 避免在構建時執行
+const skipDatabaseOps = () => {
+  return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+};
+
 // 創建新訂單
 export async function POST(request: Request) {
+  if (skipDatabaseOps()) {
+    return NextResponse.json({ status: 'success', message: '構建中' });
+  }
+
   try {
     const { cartItems, paymentMethod, shippingAddress, buyerId } = await request.json();
 

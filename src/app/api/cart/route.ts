@@ -4,8 +4,17 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+// 避免在構建時執行
+const skipDatabaseOps = () => {
+  return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+};
+
 // 獲取購物車內容
 export async function GET(request: Request) {
+  if (skipDatabaseOps()) {
+    return NextResponse.json({ status: 'success', message: '構建中' });
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
@@ -38,6 +47,10 @@ export async function GET(request: Request) {
 
 // 添加商品到購物車
 export async function POST(request: Request) {
+  if (skipDatabaseOps()) {
+    return NextResponse.json({ status: 'success', message: '構建中' });
+  }
+
   try {
     const { userId, productId, quantity } = await request.json();
 
