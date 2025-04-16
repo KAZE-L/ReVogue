@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
 }
 
 datasource db {
@@ -14,23 +9,21 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique
-  password   String
-  name       String?
-  role       UserRole  @default(buyer)
-  googleId   String?   @map("google_id")
-  avatarUrl  String?   @map("avatar_url")
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  
-  // Relations
-  products   Product[]  @relation("SellerProducts")
-  favorites  Favorite[]
-  cartItems  Cart[]
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  password     String
+  name         String?
+  role         UserRole   @default(buyer)
+  googleId     String?    @map("google_id")
+  avatarUrl    String?    @map("avatar_url")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  cartItems    Cart[]
+  favorites    Favorite[]
   buyerOrders  Order[]    @relation("BuyerOrders")
   sellerOrders Order[]    @relation("SellerOrders")
-  wardrobe   Wardrobe[]
+  products     Product[]  @relation("SellerProducts")
+  wardrobe     Wardrobe[]
 
   @@map("users")
 }
@@ -48,12 +41,10 @@ model Product {
   viewCount   Int           @default(0) @map("view_count")
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
-  
-  // Relations
-  seller      User          @relation("SellerProducts", fields: [sellerId], references: [id])
-  favorites   Favorite[]
   cartItems   Cart[]
+  favorites   Favorite[]
   orderItems  OrderItem[]
+  seller      User          @relation("SellerProducts", fields: [sellerId], references: [id])
   wardrobe    Wardrobe[]
 
   @@map("products")
@@ -64,10 +55,8 @@ model Favorite {
   userId    Int      @map("user_id")
   productId Int      @map("product_id")
   createdAt DateTime @default(now()) @map("created_at")
-  
-  // Relations
-  user      User     @relation(fields: [userId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("favorites")
 }
@@ -79,30 +68,26 @@ model Cart {
   quantity  Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  
-  // Relations
-  user      User     @relation(fields: [userId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, productId], name: "cart_user_product_unique")
   @@map("carts")
 }
 
 model Order {
-  id              Int           @id @default(autoincrement())
-  buyerId         Int           @map("buyer_id")
-  sellerId        Int           @map("seller_id")
-  totalAmount     Decimal       @map("total_amount")
-  status          OrderStatus   @default(pending)
-  paymentMethod   String        @map("payment_method")
-  shippingAddress String        @map("shipping_address")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  
-  // Relations
-  buyer           User          @relation("BuyerOrders", fields: [buyerId], references: [id])
-  seller          User          @relation("SellerOrders", fields: [sellerId], references: [id])
+  id              Int         @id @default(autoincrement())
+  buyerId         Int         @map("buyer_id")
+  sellerId        Int         @map("seller_id")
+  totalAmount     Decimal     @map("total_amount")
+  status          OrderStatus @default(pending)
+  paymentMethod   String      @map("payment_method")
+  shippingAddress String      @map("shipping_address")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
   items           OrderItem[]
+  buyer           User        @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller          User        @relation("SellerOrders", fields: [sellerId], references: [id])
 
   @@map("orders")
 }
@@ -114,8 +99,6 @@ model OrderItem {
   quantity  Int
   price     Decimal
   createdAt DateTime @default(now()) @map("created_at")
-  
-  // Relations
   order     Order    @relation(fields: [orderId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
 
@@ -128,10 +111,8 @@ model Wardrobe {
   productId Int      @map("product_id")
   notes     String?
   createdAt DateTime @default(now()) @map("created_at")
-  
-  // Relations
-  user      User     @relation(fields: [userId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("wardrobe")
 }

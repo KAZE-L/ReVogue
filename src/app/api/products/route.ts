@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const preferredRegion = 'auto';
 
 // 避免在構建時執行
 const skipDatabaseOps = () => {
@@ -12,7 +13,13 @@ const skipDatabaseOps = () => {
 // 獲取商品列表
 export async function GET(request: Request) {
   if (skipDatabaseOps()) {
-    return NextResponse.json({ status: 'success', message: '構建中' });
+    return new NextResponse(
+      JSON.stringify({ status: 'success', message: '構建中' }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   try {
@@ -20,34 +27,33 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const keyword = searchParams.get('keyword');
 
-    const where: any = {};
-    if (category) where.category = category;
-    if (keyword) {
-      where.OR = [
-        { name: { contains: keyword } },
-        { description: { contains: keyword } }
-      ];
-    }
-
     const products = await prisma.product.findMany({
-      where,
-      include: {
-        seller: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
-      }
+      where: {
+        ...(category && { category }),
+        ...(keyword && {
+          OR: [
+            { name: { contains: keyword } },
+            { description: { contains: keyword } },
+          ],
+        }),
+      },
     });
 
-    return NextResponse.json({ products });
+    return new NextResponse(
+      JSON.stringify({ products }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('獲取商品列表錯誤:', error);
-    return NextResponse.json(
-      { error: '服務器錯誤' },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({ error: '服務器錯誤' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 }
@@ -55,40 +61,46 @@ export async function GET(request: Request) {
 // 創建新商品
 export async function POST(request: Request) {
   if (skipDatabaseOps()) {
-    return NextResponse.json({ status: 'success', message: '構建中' });
+    return new NextResponse(
+      JSON.stringify({ status: 'success', message: '構建中' }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   try {
-    const { name, price, description, category, images, sellerId } = await request.json();
+    const { name, price, description, category, images, sellerId, styleTags } = await request.json();
 
-    // 驗證必要字段
-    if (!name || !price || !description || !category || !sellerId) {
-      return NextResponse.json(
-        { error: '缺少必要字段' },
-        { status: 400 }
-      );
-    }
-
-    // 創建商品
     const product = await prisma.product.create({
       data: {
         name,
-        price: parseFloat(price),
+        price,
         description,
         category,
-        images: images || [],
-        sellerId: parseInt(sellerId),
-        styleTags: [],
-        status: 'active'
-      }
+        images,
+        sellerId,
+        status: 'active',
+        styleTags: styleTags || []
+      },
     });
 
-    return NextResponse.json(product, { status: 201 });
+    return new NextResponse(
+      JSON.stringify(product),
+      {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('創建商品錯誤:', error);
-    return NextResponse.json(
-      { error: '服務器錯誤' },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({ error: '服務器錯誤' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 }

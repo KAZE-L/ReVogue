@@ -3,29 +3,49 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const preferredRegion = 'auto';
 
 // 避免在構建時執行
-export async function GET() {
-  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
-    return NextResponse.json({ status: 'success', message: '構建中' });
+const skipDatabaseOps = () => {
+  return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+};
+
+export async function GET(request: Request) {
+  if (skipDatabaseOps()) {
+    return new NextResponse(
+      JSON.stringify({ status: 'success', message: '構建中' }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   try {
-    // 測試數據庫連接
     const users = await prisma.user.findMany({
-      take: 1
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+      },
     });
-    
-    return NextResponse.json({
-      status: 'success',
-      message: '數據庫連接正常',
-      data: users
-    });
+
+    return new NextResponse(
+      JSON.stringify({ users }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('測試錯誤:', error);
-    return NextResponse.json(
-      { error: '數據庫連接失敗' },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({ error: '服務器錯誤' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 } 

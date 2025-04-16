@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const preferredRegion = 'auto';
 
 // 避免在構建時執行
 const skipDatabaseOps = () => {
@@ -12,7 +13,13 @@ const skipDatabaseOps = () => {
 // 創建新訂單
 export async function POST(request: Request) {
   if (skipDatabaseOps()) {
-    return NextResponse.json({ status: 'success', message: '構建中' });
+    return new NextResponse(
+      JSON.stringify({ status: 'success', message: '構建中' }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   try {
@@ -20,9 +27,12 @@ export async function POST(request: Request) {
 
     // 驗證輸入
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
-      return NextResponse.json(
-        { error: '購物車為空' },
-        { status: 400 }
+      return new NextResponse(
+        JSON.stringify({ error: '購物車為空' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
       );
     }
 
@@ -32,43 +42,38 @@ export async function POST(request: Request) {
     });
 
     if (!firstProduct) {
-      return NextResponse.json(
-        { error: '商品不存在' },
-        { status: 404 }
+      return new NextResponse(
+        JSON.stringify({ error: '商品不存在' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
       );
     }
 
-    // 計算總金額
+    // 先获取商品价格并计算总金额
     const totalAmount = await calculateTotalAmount(cartItems);
-
-    // 創建訂單項
-    const orderItems = await Promise.all(
-      cartItems.map(async (item) => {
-        const price = await getProductPrice(parseInt(item.productId));
-        return {
-          productId: parseInt(item.productId),
-          quantity: parseInt(item.quantity),
-          price
-        };
-      })
-    );
 
     // 創建訂單
     const order = await prisma.order.create({
       data: {
         buyerId: parseInt(buyerId),
         sellerId: firstProduct.sellerId,
-        totalAmount,
+        status: 'pending',
         paymentMethod,
         shippingAddress,
-        status: 'pending',
+        totalAmount,
         items: {
-          create: orderItems
-        }
+          create: cartItems.map((item: any) => ({
+            productId: parseInt(item.productId),
+            quantity: parseInt(item.quantity),
+            price: item.price || firstProduct.price,
+          })),
+        },
       },
       include: {
-        items: true
-      }
+        items: true,
+      },
     });
 
     // 清空購物車
@@ -81,12 +86,26 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json(order, { status: 201 });
+    return new NextResponse(
+      JSON.stringify({
+        id: order.id,
+        status: order.status,
+        totalAmount,
+        items: order.items,
+      }),
+      {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('創建訂單錯誤:', error);
-    return NextResponse.json(
-      { error: '服務器錯誤' },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({ error: '服務器錯誤' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 }
