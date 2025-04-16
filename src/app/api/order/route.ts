@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // 創建新訂單
 export async function POST(request: Request) {
