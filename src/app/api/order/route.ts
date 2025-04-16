@@ -85,15 +85,17 @@ async function calculateTotalAmount(cartItems: any[]) {
   let total = 0;
   for (const item of cartItems) {
     const price = await getProductPrice(parseInt(item.productId));
-    total += price * parseInt(item.quantity);
+    if (price) {
+      total = total + (price * parseInt(item.quantity));
+    }
   }
   return total;
 }
 
-async function getProductPrice(productId: number) {
+async function getProductPrice(productId: number): Promise<number> {
   const product = await prisma.product.findUnique({
     where: { id: productId },
     select: { price: true }
   });
-  return product?.price || 0;
+  return product?.price ? Number(product.price) : 0;
 } 
