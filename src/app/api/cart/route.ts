@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // 獲取購物車內容
 export async function GET(request: Request) {
   try {
