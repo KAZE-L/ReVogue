@@ -7,12 +7,21 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 export const preferredRegion = 'auto';
 
+// 添加调试日志
+console.log('Login API initialized');
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Database URL:', process.env.DATABASE_URL);
+
 // 避免在構建時執行
 const skipDatabaseOps = () => {
-  return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+  const skip = process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+  console.log('Skip database ops:', skip);
+  return skip;
 };
 
 export async function POST(request: Request) {
+  console.log('Received login request');
+  
   // 立即返回成功響應，避免任何數據庫操作
   if (skipDatabaseOps()) {
     return new NextResponse(
