@@ -38,7 +38,7 @@ export default function ProductPage() {
   return (
     <>
       <div className="max-w-7xl mx-auto p-6">
-        {/* 返回按鈕區塊，單獨一個 div */}
+        {/* 返回按鈕區塊*/}
         <div className="mb-6 ml-[-80]">
           <button
             onClick={() => router.back()}
