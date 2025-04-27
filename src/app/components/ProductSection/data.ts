@@ -21,7 +21,7 @@ type Product = {
   
   export const productSections: ProductSectionData[] = [
     {
-      title: '推薦商品',
+      title: '（相似推薦）',
       products: sampleProducts,
     },
     {
@@ -29,7 +29,7 @@ type Product = {
       products: sampleProducts,
     },
     {
-      title: '更多商品推薦',
+      title: '@ 賣家ID_1234',
       products: sampleProducts,
     },
   ]

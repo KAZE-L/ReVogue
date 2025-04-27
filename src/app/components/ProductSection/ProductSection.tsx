@@ -17,7 +17,7 @@ interface ProductSectionProps {
 const ProductSection: React.FC<ProductSectionProps> = ({ title, products }) => {
   return (
     <section className="px-6 py-2">
-      <h2 className="text-lg font-semibold mb-3">{title}</h2>
+      <h2 className="text-lg font-semibold mb-3 pt-6">{title}</h2>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {products.map((product) => (
           <ProductCard
