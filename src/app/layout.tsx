@@ -1,18 +1,22 @@
-import '../styles/globals.css'
+// src/app/layout.tsx
 
-import Header from './components/Header'; // 引入 Header 組件
+import './globals.css'
+import { ReactNode } from 'react'
+import { Inter } from 'next/font/google'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'ReVogue',
+  description: 'A clean Next.js starter for fashion e-commerce',
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <title>ReVogue</title>
-      </head>
-      <body>
-        <Header /> {/* 顯示全局Header */}
-        <main className="p-6">{children}</main> {/* 這是頁面內容 */}
+      <body className={inter.className}>
+        {children}
       </body>
     </html>
-  );
+  )
 }
