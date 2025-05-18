@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import './api/file-service/init'; // 引入檔案服務初始化
 
 import Header from './components/Header'; // 引入 Header 組件
 

@@ -12,7 +12,19 @@ const nextConfig = {
         source: '/api/:path*',
         destination: '/api/:path*',
       },
+      {
+        source: '/uploads/:path*',
+        destination: '/uploads/:path*',
+      },
     ];
+  },
+  // 配置静态资源目录
+  output: 'standalone',
+  outputFileTracing: true,
+  // 允许处理大文件上传
+  api: {
+    bodyParser: false,
+    responseLimit: false,
   },
 };
 
