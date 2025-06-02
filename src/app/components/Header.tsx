@@ -9,9 +9,9 @@ export default function Header({ onToggleSidebar }: { onToggleSidebar: () => voi
         <Menu className="w-6 h-6" />
       </button>
       <h1 className="text-xl font-bold absolute left-1/2 transform -translate-x-1/2">
-        穿搭推薦助手
+        CHATBOT
       </h1>
-      <div className="w-6" /> {/* placeholder to balance layout */}
+      <div className="w-6" />
     </header>
   );
 }

@@ -1,36 +1,44 @@
-// app/page.tsx
+// app/chatbot/page.tsx
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import ChatMessage from './components/ChatMessage';
-import InputBox from './components/InputBox';
+import WeatherCard from './components/WeatherCard';
+import ScheduleCard from './components/ScheduleCard';
+import RandomCard from './components/RandomCard';
+import TrendyCard from './components/TrendyCard';
+import DailyCard from './components/DailyCard';
 
-export default function HomePage() {
-  const [showDetails, setShowDetails] = useState(false);
+export default function ChatbotPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header onToggleSidebar={toggleSidebar} />
-      <div className="relative flex flex-1 overflow-hidden">
-        <Sidebar isOpen={sidebarOpen} onToggleSidebar={toggleSidebar} />
-        <main
-          className={`flex-1 transition-all duration-300 ease-in-out flex flex-col ${
-            sidebarOpen ? 'ml-64' : 'ml-0'
-          }`}
-        >
-          <div className="max-w-4xl mx-auto w-full flex flex-col flex-1 overflow-hidden">
-            <div className="flex-1 overflow-y-auto space-y-6 p-6">
-              <ChatMessage showDetails={showDetails} setShowDetails={setShowDetails} />
-            </div>
-            <div className="p-6 sticky bottom-0 bg-gray-50">
-              <InputBox />
-            </div>
+    <div className="min-h-screen bg-white flex flex-col relative overflow-x-hidden">
+      <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <main className="flex-1" />
+
+      <div className="p-4 max-w-4xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="md:col-span-1">
+            <WeatherCard />
           </div>
-        </main>
+          <div className="md:col-span-2">
+            <ScheduleCard />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <RandomCard />
+          <TrendyCard />
+          <DailyCard />
+        </div>
+        <div className="w-full mt-12 pb-8">
+          <input
+            type="text"
+            placeholder="詢問任何穿搭建議"
+            className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
       </div>
     </div>
   );
