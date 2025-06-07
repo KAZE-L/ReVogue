@@ -5,9 +5,9 @@ export default function InputBox() {
       <input
         type="text"
         placeholder="詢問任何穿搭建議..."
-        className="flex-1 px-4 py-2 rounded-lg border focus:outline-none"
+        className="flex-1 px-4 py-2 rounded-3xl border focus:outline-none"
       />
-      <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+      <button className="bg-black text-white px-4 py-2 rounded-3xl hover:bg-gray-800">
         送出
       </button>
     </div>

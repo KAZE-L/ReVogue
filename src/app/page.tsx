@@ -8,6 +8,7 @@ import ScheduleCard from './components/ScheduleCard';
 import RandomCard from './components/RandomCard';
 import TrendyCard from './components/TrendyCard';
 import DailyCard from './components/DailyCard';
+import InputBox from './components/InputBox';
 
 export default function ChatbotPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,13 +20,9 @@ export default function ChatbotPage() {
       <main className="flex-1" />
 
       <div className="p-4 max-w-4xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="md:col-span-1">
-            <WeatherCard />
-          </div>
-          <div className="md:col-span-2">
-            <ScheduleCard />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <WeatherCard />
+          <ScheduleCard />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <RandomCard />
@@ -33,11 +30,7 @@ export default function ChatbotPage() {
           <DailyCard />
         </div>
         <div className="w-full mt-12 pb-8">
-          <input
-            type="text"
-            placeholder="詢問任何穿搭建議"
-            className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-          />
+          <InputBox />
         </div>
       </div>
     </div>
