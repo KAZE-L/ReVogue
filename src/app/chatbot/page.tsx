@@ -2,15 +2,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import WeatherCard from './components/WeatherCard';
-import ScheduleCard from './components/ScheduleCard';
-import RandomCard from './components/RandomCard';
-import TrendyCard from './components/TrendyCard';
-import DailyCard from './components/DailyCard';
-import InputBox from './components/InputBox';
-import MultiAgentChat from './components/MultiAgentChat';
+import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
+import WeatherCard from '../components/WeatherCard';
+import ScheduleCard from '../components/ScheduleCard';
+import RandomCard from '../components/RandomCard';
+import TrendyCard from '../components/TrendyCard';
+import DailyCard from '../components/DailyCard';
+import InputBox from '../components/InputBox';
+import MultiAgentChat from '../components/MultiAgentChat';
 
 
 type Message = {
