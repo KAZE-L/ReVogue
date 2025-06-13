@@ -2,7 +2,7 @@
 
 import { CloudHail } from "lucide-react";
 
-export default function WeatherCard() {
+export default function WeatherCard({ onTrigger }: { onTrigger: () => void }) {
   return (
     <div className="bg-blue-300 text-white p-4 rounded-xl flex flex-col justify-between min-h-[150px]">
       {/* 第一行：icon + 天氣文字 */}
@@ -15,7 +15,9 @@ export default function WeatherCard() {
 
       <div className="flex justify-between items-end">
         <div className="text-3xl font-bold ml-2">27℃</div>
-        <a href="#" className="text-sm underline">看看穿搭建議 →</a>
+        <button onClick={onTrigger} className="text-sm underline">
+          看看穿搭建議 →
+        </button>
       </div>
     </div>
   );
