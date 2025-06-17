@@ -80,6 +80,7 @@ export default function ChatbotPage() {
         className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'} flex flex-col justify-end`}
       >
         <main className="p-4 max-w-4xl mx-auto w-full">
+            <div className="flex flex-col items-center text-md font-bold mt-10 mb-12">六位穿搭顧問已上線，來點風格靈感吧！</div>
           {!showChat ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
