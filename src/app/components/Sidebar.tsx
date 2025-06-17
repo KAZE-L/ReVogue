@@ -47,37 +47,33 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`sidebar-root${isOpen ? ' open' : ''}`}
     >
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="sidebar-header">
         <h1
-          className="text-xl font-bold cursor-pointer"
+          className="sidebar-title"
           onClick={() => {
             goHome();
           }}
         >
           ReVogue
         </h1>
-        <button onClick={onClose} className="text-gray-700" aria-label="Close Sidebar">
+        <button onClick={onClose} className="sidebar-close-btn" aria-label="Close Sidebar">
           <X className="w-6 h-6" />
         </button>
       </div>
 
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Image src="/user.png" alt="User photo" width={32} height={32} className="rounded-full" />
-          <span className="text-sm font-semibold">USER USER</span>
-        </div>
-      </div>
+      <div className="sidebar-user">
+  <Image src="/user.png" alt="User photo" width={32} height={32} className="sidebar-user-img" />
+  <span className="sidebar-user-name">USER USER</span>
+</div>
 
       <div
         onClick={() => {
           goHome();
           onClose();
         }}
-        className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
+        className="sidebar-nav-item"
       >
         <Edit className="w-5 h-5" /> 新對話
       </div>
@@ -87,7 +83,7 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
           router.push('/userData');
           onClose();
         }}
-        className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
+        className="sidebar-nav-item"
       >
         <Database className="w-5 h-5" /> 個人數據
       </div>
@@ -97,20 +93,20 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
           router.push('/setting');
           onClose();
         }}
-        className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
+        className="sidebar-nav-item"
       >
         <Settings className="w-5 h-5" /> 設定
       </div>
 
-      <div className="overflow-y-auto h-[calc(100%-12rem)] px-4 py-3">
-        <h2 className="text-xs text-gray-400">聊天記錄</h2>
+      <div className="sidebar-records">
+        <h2 className="sidebar-record-month">聊天記錄</h2>
         {Object.entries(chatRecords).map(([month, records]) => (
           <div key={month} className="mb-2">
             <div
-              className="flex justify-between items-center mt-6 cursor-pointer"
+              className="sidebar-record-toggle"
               onClick={() => toggleMonth(month)}
             >
-              <div className="text-sm font-semibold text-gray-500">{month}</div>
+              <div className="sidebar-record-month-label">{month}</div>
               {expandedMonths[month] ? (
                 <ChevronUp className="w-4 h-4 text-gray-500" />
               ) : (
@@ -118,14 +114,14 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
               )}
             </div>
             {expandedMonths[month] && (
-              <div className="mt-6 space-y-4">
+              <div className="sidebar-record-list">
                 {records.map(({ date, title }) => (
-                  <div key={date} className="flex justify-between items-center text-sm">
+                  <div key={date} className="sidebar-record-item">
                     <div>
-                      <div className="font-semibold mb-1">{date}</div>
-                      <div className="text-gray-600 text-xs">{title}</div>
+                      <div className="sidebar-record-date">{date}</div>
+                      <div className="sidebar-record-title">{title}</div>
                     </div>
-                    <button aria-label={`More options for ${title}`}>
+                    <button className="sidebar-record-more" aria-label={`More options for ${title}`}>
                       <MoreHorizontal className="w-4 h-4 text-gray-500" />
                     </button>
                   </div>

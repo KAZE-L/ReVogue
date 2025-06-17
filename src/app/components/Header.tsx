@@ -11,14 +11,14 @@ export default function Header({
   goHome: () => void;
 }) {
   return (
-    <header className="bg-white shadow px-4 py-4 flex items-center justify-between">
+    <header className="header-root">
       {/* 左側區域：menu icon + ReVogue */}
-      <div className="flex items-center space-x-3">
-        <button onClick={onToggleSidebar} className="text-gray-700">
+      <div className="header-left">
+        <button onClick={onToggleSidebar} className="header-menu-btn">
           <Menu className="w-6 h-6" />
         </button>
         <h1
-          className="text-xl font-bold cursor-pointer"
+          className="header-title"
           onClick={goHome}
         >
           ReVogue
@@ -26,7 +26,7 @@ export default function Header({
       </div>
 
       {/* 右側預留空間（例如帳號、設定） */}
-      <div className="w-6" />
+      <div className="header-right" />
     </header>
   );
 }

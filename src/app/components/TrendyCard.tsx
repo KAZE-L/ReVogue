@@ -6,13 +6,13 @@ export default function TrendyCard({onTrigger}:{onTrigger: () => void}) {
   return (
     <div
       onClick={onTrigger}
-      className="bg-gray-100 text-gray-800 p-4 rounded-xl cursor-pointer hover:bg-gray-200 transition"
+      className="card-base card-gray card-hover"
     >
-      <div className="text-md font-medium mb-14 flex items-center">
+      <div className="card-title">
         <span className="font-bold">熱門穿搭</span>
-        <EggFried className="w-5 h-5 ml-1" />
+        <EggFried className="card-icon-sm" />
       </div>  
-      <div className="text-sm">跟上流行了嗎，看看熱門穿搭</div>
+      <div className="card-desc">跟上流行了嗎，看看熱門穿搭</div>
     </div>
   );
 }

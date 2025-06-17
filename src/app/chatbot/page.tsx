@@ -72,47 +72,42 @@ export default function ChatbotPage() {
   }, [messages]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col relative overflow-x-hidden">
+    <div className="chatbot-root">
       <Header onToggleSidebar={() => setSidebarOpen((v) => !v)} goHome={goHome} />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} goHome={goHome} />
 
       <div
-        className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'} flex flex-col justify-end`}
+        className={`chatbot-main ${sidebarOpen ? 'ml-64' : 'ml-0'}`}
       >
-        <main className="p-4 max-w-4xl mx-auto w-full">
+        <main className="chatbot-main-content">
           {!showChat ? (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="chatbot-card-row md-2">
                 <WeatherCard onTrigger={() => handleCardClick('weather')} />
                 <ScheduleCard onTrigger={() => handleCardClick('schedule')} />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="chatbot-card-row md-3">
                 <RandomCard onTrigger={() => handleCardClick('random')} />
                 <TrendyCard onTrigger={() => handleCardClick('trendy')} />
                 <DailyCard onTrigger={() => handleCardClick('daily')} />
               </div>
-              <div className="w-full mt-10 pb-8">
+              <div className="chatbot-input-container">
                 <InputBox onSend={handleSendMessage} />
               </div>
             </>
           ) : (
             <>
               <div
-                className="w-full flex flex-col space-y-3 mb-4 overflow-y-auto pr-2"
-                style={{ maxHeight: 'calc(100vh - 250px)' }}
+                className="chatbot-messages"
               >
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`max-w-[80%] ${
-                      msg.role === 'user' ? 'text-right ml-auto' : 'text-left'
-                    }`}
+                    className={`chatbot-message ${msg.role === 'user' ? 'user' : 'bot'}`}
                   >
                     {typeof msg.content === 'string' ? (
                       <div
-                        className={`p-3 rounded-lg ${
-                          msg.role === 'user' ? 'bg-blue-100' : 'bg-gray-100'
-                        }`}
+                        className={`chatbot-message-bubble ${msg.role === 'user' ? 'user' : 'bot'}`}
                       >
                         {msg.content}
                       </div>
@@ -124,7 +119,7 @@ export default function ChatbotPage() {
                 {initialType && <MultiAgentChat />}
                 <div ref={messagesEndRef} />
               </div>
-              <div className="w-full mt-4 pb-8">
+              <div className="chatbot-input-container-bottom">
                 <InputBox onSend={handleSendMessage} />
               </div>
             </>

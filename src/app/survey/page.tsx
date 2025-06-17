@@ -98,30 +98,30 @@ export default function SurveyPage() {
 
   if (!started) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-white px-4">
-        <div className="text-center max-w-md">
-          <h1 className="text-2xl font-bold mb-10">ReVogue</h1>
-          <p className="text-sm text-black font-normal mb-5">
+      <main className="survey-main-bg">
+        <div className="survey-intro">
+          <h1 className="survey-title">ReVogue</h1>
+          <p className="survey-desc">
             歡迎來到你的虛擬穿搭顧問！
           </p>
-          <Image src="/star.svg" alt="star" width={20} height={20} className="mx-auto mb-5" />
-          <p className="text-sm text-black font-semibold leading-loose mb-5 px-6 ">
+          <Image src="/star.svg" alt="star" width={20} height={20} className="survey-img" />
+          <p className="survey-desc">
             我們將透過六位專屬顧問，<br />
             根據你的行程、風格與特色，<br />
             為你打造最合適的每日穿搭建議。<br />
             只需要幾個步驟，<br />
             就能展開專屬於你的時尚對話。
           </p>
-          <Image src="/star.svg" alt="star" width={20} height={20} className="mx-auto mb-6" />
-          <div className="space-y-5">
+          <Image src="/star.svg" alt="star" width={20} height={20} className="survey-img mb-6" />
+          <div className="survey-btn-group">
             <button
               onClick={() => setStarted(true)}
-              className="w-full border border-black bg-[#3E3E3E] text-sm text-white font-bold py-2 rounded-xl shadow-[0_0_0_2px_white,0_0_0_4px_black] hover:bg-gray-600 transition"
+              className="survey-btn-main"
             >
               馬上開始
             </button>
             <button
-              className="w-full border border-[#3E3E3E] text-[#3E3E3E] font-bold py-2 rounded-xl hover:bg-gray-100 transition"
+              className="survey-btn-secondary"
               onClick={() => router.push('/chatbot')}
             >
               先逛逛
@@ -135,23 +135,23 @@ export default function SurveyPage() {
   if (finished) {
   return (
     <main className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="text-center max-w-md space-y-6">
-        <h1 className="text-2xl font-bold mb-14">ReVogue</h1>
-        <h2 className="text-md font-bold">準備完成！</h2>
+      <div className="survey-finish-container">
+        <h1 className="survey-finish-title">ReVogue</h1>
+        <h2 className="survey-finish-subtitle">準備完成！</h2>
 
-        <div className="text-sm font-semibold text-gray-700 space-y-2 px-6">
-          <Image src="/star.svg" alt="star" width={20} height={20} className="mx-auto pt-2 mb-8" />
+        <div className="survey-finish-info">
+          <Image src="/star.svg" alt="star" width={20} height={20} className="survey-img" />
 
           <p>你的六位穿搭顧問已經準備就緒！</p>
           <p>點擊開始，開啟你的專屬穿搭提案！</p>
 
-          <Image src="/star.svg" alt="star" width={20} height={20} className="mx-auto pt-6 pb-4" />
+          <Image src="/star.svg" alt="star" width={20} height={20} className="survey-img" />
         </div>
 
-        <div className="space-y-5 ">
+        <div className="survey-finish-btn-group">
           <button
             onClick={() => router.push("/chatbot")}
-            className="w-full border border-black bg-[#3E3E3E] text-sm text-white font-bold py-2 rounded-xl shadow-[0_0_0_2px_white,0_0_0_4px_black] hover:bg-gray-600 transition"
+            className="survey-btn-main"
           >
             開始對話
           </button>
@@ -161,7 +161,7 @@ export default function SurveyPage() {
               setStarted(false);
               setFinished(false);
             }}
-            className="w-full border border-[#3E3E3E] text-[#3E3E3E] font-bold py-2 rounded-xl hover:bg-gray-100 transition"
+            className="survey-btn-secondary"
           >
             重新個人化
           </button>
@@ -173,34 +173,34 @@ export default function SurveyPage() {
 
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-white px-4 py-10">
-      <div className="max-w-md w-full text-left">
+    <main className="survey-main">
+      <div className="survey-content">
         {/* 題數與進度 */}
-        <div className="flex justify-left items-baseline mb-4">
-          <span className="text-5xl font-bold">
+        <div className="survey-progress">
+          <span className="survey-step">
             {String(step + 1).padStart(2, "0")}
           </span>
-          <span className="ml-2 text-[#C5C5C5] text-2xl font-bold">
+          <span className="survey-step-total">
             /{String(totalSteps).padStart(2, "0")}
           </span>
         </div>
 
         {/* 藍色底線 */}
-        <div className="flex justify-left w-12 h-2 bg-[#0891B2] mb-7" />
+        <div className="survey-progress-bar" />
 
         {/* 問題標題與描述 */}
-        <h2 className="text-lg font-bold mb-2">{current.title}</h2>
-        <p className="text-sm font-semibold text-gray-600 mb-14 leading-relaxed">
+        <h2 className="survey-question-title">{current.title}</h2>
+        <p className="survey-question-desc">
           {current.description}
         </p>
 
         {/* 題型渲染 */}
         {current.type === "choice" && (
-          <div className="space-y-6 mb-24 px-14 font-bold text-[#3E3E3E]">
-            {current.options.map((opt, idx) => (
+          <div className="survey-choice-group">
+            {current.options?.map((opt, idx) => (
               <button
                 key={idx}
-                className="w-full border border-[#3E3E3E] py-2 rounded-xl hover:bg-gray-100 transition"
+                className="survey-choice-btn"
                 onClick={goNext}
               >
                 {opt}
@@ -210,17 +210,17 @@ export default function SurveyPage() {
         )}
 
         {current.type === "input" && (
-          <div className="mb-8">
+          <div className="survey-input-group">
             <input
               type="text"
               placeholder={current.placeholder}
-              className="w-full border-b border-gray-300 text-center py-2 focus:outline-none focus:border-black mb-8"
+              className="survey-input"
             />
           </div>
         )}
 
         {/* 底部按鈕區 */}
-        <div className="flex items-center justify-between text-sm text-gray-400 mb-10">
+        <div className="survey-bottom-bar">
           <button onClick={goPrev} className="flex items-center space-x-1">
             <ChevronLeft className="w-4 h-4" />
             <span>上一題</span>
@@ -230,8 +230,8 @@ export default function SurveyPage() {
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
-        <div className="flex items-center justify-between text-sm text-gray-400 mb-10 px-14">
-        <button className="w-full border border-gray-400 font-bold py-2 rounded-xl hover:bg-gray-100 transition"
+        <div className="survey-skip-bar">
+        <button className="survey-skip-btn"
          onClick={() => router.push('/chatbot')}
         >
           跳過個人化

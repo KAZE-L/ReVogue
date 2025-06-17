@@ -21,26 +21,26 @@ export default function MultiAgentChat() {
   const [showDiscussion, setShowDiscussion] = useState(false);
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="multiagent-chat-root">
 
-      <div className="border rounded-xl p-4">
-        <div className="flex justify-between items-center mb-2">
+      <div className="multiagent-chat-card">
+        <div className="multiagent-chat-toolbar">
           <button
-            className="text-sm text-gray-600 flex items-center gap-1"
+            className="multiagent-chat-toggle"
             onClick={() => setShowDiscussion(!showDiscussion)}
           >
             {showDiscussion ? 'hide discussion' : 'show discussion'}
             {showDiscussion ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
-          <MessageSquare size={16} className="text-gray-400" />
+          <MessageSquare size={16} className="multiagent-chat-icon" />
         </div>
 
         {showDiscussion && (
-          <div className="space-y-4">
+          <div className="multiagent-chat-discussion">
             {agents.map((agent) => (
-              <div key={agent.id} className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-xs text-gray-500 mb-1">{agent.name}</div>
-                <div className="text-sm text-gray-700 whitespace-pre-line">
+              <div key={agent.id} className="multiagent-chat-agent">
+                <div className="multiagent-chat-agent-name">{agent.name}</div>
+                <div className="multiagent-chat-agent-content">
                   {agent.content}
                 </div>
               </div>
@@ -48,9 +48,9 @@ export default function MultiAgentChat() {
           </div>
         )}
 
-        <div className="border-t pt-4 mt-4">
-          <div className="text-xs text-gray-500 mb-1">{leadAgent.name}</div>
-          <div className="text-sm text-gray-800 whitespace-pre-line">
+        <div className="multiagent-chat-lead">
+          <div className="multiagent-chat-lead-name">{leadAgent.name}</div>
+          <div className="multiagent-chat-lead-content">
             {leadAgent.content}
           </div>
         </div>
