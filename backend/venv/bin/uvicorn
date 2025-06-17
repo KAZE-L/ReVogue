@@ -1,4 +1,4 @@
-#!/Users/kazz0704/Desktop/ReVogue/backend/venv/bin/python3
+#!/Users/kazz0704/Desktop/ReVogue/backend/venv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys

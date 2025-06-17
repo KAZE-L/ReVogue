@@ -6,6 +6,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  transpilePackages: ['undici', 'firebase'],
   async rewrites() {
     return [
       {
