@@ -95,13 +95,24 @@ export default function SurveyPage() {
 
   const [finished, setFinished] = useState(false);
 
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+
+    const toggleStyle = (style: string) => {
+    setSelectedStyles((prev) =>
+        prev.includes(style) 
+        ? prev.filter((s) => s !== style)
+        : [...prev, style]
+    );
+    };
+
+
 
   if (!started) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-white px-4">
         <div className="text-center max-w-md">
           <h1 className="text-2xl font-bold mb-10">ReVogue</h1>
-          <p className="text-sm text-black font-normal mb-5">
+          <p className="text-sm text-black font-semibold mb-5">
             歡迎來到你的虛擬穿搭顧問！
           </p>
           <Image src="/star.svg" alt="star" width={20} height={20} className="mx-auto mb-5" />
@@ -190,7 +201,7 @@ export default function SurveyPage() {
 
         {/* 問題標題與描述 */}
         <h2 className="text-lg font-bold mb-2">{current.title}</h2>
-        <p className="text-sm font-semibold text-gray-600 mb-14 leading-relaxed">
+        <p className="text-sm font-semibold text-gray-600 mb-12 leading-relaxed">
           {current.description}
         </p>
 
@@ -216,62 +227,126 @@ export default function SurveyPage() {
 
         ):current.type === "photo" ? (
         // 需上傳照片的題
-        <div className="flex justify-center mb-24">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                {[
-                "#F7F0E8", "#AB8763", "#F4E9E3", "#8F654D", "#F8EDD9",
-                "#6C4B3C", "#EDDFC4", "#423731", "#DDC5A1", "#2F2A24"
-                ].map((color, i) => (
+        <div className="flex flex-col items-center mb-24 space-y-6">
+
+            {/* 拍照區塊（相機） */}
+            <label
+            htmlFor="cameraInput"
+            className="flex flex-col items-center justify-center w-64 h-36 border-4 border-dashed border-zinc-400 p-8 rounded-md cursor-pointer hover:border-zinc-600 transition"
+            >
+            <Image src="/camera.svg" alt="add a photo" width={64} height={64} className="mb-3" />
+            <span className="text-xs text-gray-600">點擊拍照</span>
+            </label>
+
+            {/* 隱藏的拍照 input */}
+            <input
+            id="cameraInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={goNext}
+            />
+
+            {/* 上傳照片按鈕 */}
+            <div className="w-full px-24">
+            <label htmlFor="uploadInput">
                 <button
-                    key={i}
-                    className="w-36 h-6 rounded-full border focus:outline-none hover:border-2 hover:border-gray hover:shadow-sm"
-                    style={{ backgroundColor: color }}
-                    onClick={goNext}
-                />
+                className="w-full border border-[#3E3E3E] py-2 rounded-xl hover:bg-gray-100 transition font-bold text-[#3E3E3E]"
+                >
+                上傳照片
+                </button>
+            </label>
+            <input
+                id="uploadInput"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={goNext}
+            />
+            </div>
+
+        </div>
+
+       ): step === 5 ? (
+        <div className="relative px-6 mb-10">
+            {/* 滾動區域 */}
+            <div
+            className="flex flex-col justify-between max-h-[300px] overflow-y-auto"
+            style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+            }}
+            >
+            <style jsx>{`
+                div::-webkit-scrollbar {
+                display: none;
+                }
+            `}</style>
+
+            {/* 多選風格標籤 */}
+            <div className="flex flex-wrap gap-2 justify-start pb-24">
+                {[
+                "極簡", "知性通勤", "日系", "都會休閒", "Y2K復古未來感", "戶外機能",
+                "英倫學院", "韓系", "波西米亞", "時尚實驗", "文青", "法式優雅", "古著",
+                "日系古著", "中性", "蒲公英系森系", "暗黑哥德", "未來工業", "視覺系", "嘻哈風",
+                "輕便", "休閑", "美式", "運動風", "工裝風", "Cyberpunk", "洛麗塔", "懶人舒適風", "浪漫唯美", "輕熟氣質",
+                "甜美可愛", "軍裝風", "民族風", "蒸汽龐克", "水手風", "海島度假風",
+                "溫柔姐姐風", "原宿風", "名媛風", "美式復古", "鄉村田園", "工業風",
+                "藝術系", "山系", "帥氣皮衣風", "賽博和風", "中式新潮"
+                ].map((style, index) => (
+                <button
+                    key={index}
+                    onClick={() => toggleStyle(style)}
+                    className={`px-4 py-1 rounded-full text-sm font-medium border 
+                    ${
+                        selectedStyles.includes(style)
+                        ? "bg-zinc-600 text-white"
+                        : "bg-zinc-200 text-black hover:bg-zinc-300"
+                    } transition`}
+                >
+                    {style}
+                </button>
                 ))}
+            </div>
+            </div>
+
+            {/* 模糊遮罩 */}
+            <div className="absolute bottom-10 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-white to-transparent"></div>
+
+            {/* 確認按鈕 */}
+            <div className="absolute bottom-0 left-0 right-0 px-6">
+            <button
+            onClick={goNext}
+            className="w-full text-white bg-[#3E3E3E] font-semibold py-2 rounded-xl hover:bg-gray-600 transition"
+            >
+            確認選項
+            </button>
             </div>
         </div>
 
-        ):step === 5 ? (
-        // 第六題風格偏好
-        <div className="flex justify-center mb-24">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                {[
-                "#F7F0E8", "#AB8763", "#F4E9E3", "#8F654D", "#F8EDD9",
-                "#6C4B3C", "#EDDFC4", "#423731", "#DDC5A1", "#2F2A24"
-                ].map((color, i) => (
-                <button
-                    key={i}
-                    className="w-36 h-6 rounded-full border focus:outline-none hover:border-2 hover:border-gray hover:shadow-sm"
-                    style={{ backgroundColor: color }}
-                    onClick={goNext}
-                />
-                ))}
-            </div>
+        ): step === 6 ? (
+        // 第七題同步 calendar
+        <div className="flex justify-center mb-24 px-20">
+            <button
+            onClick={goNext} // 👉 這裡可以換成實際的同步處理函式
+            className="w-full flex items-center justify-center gap-3 text-zinc-500 font-semibold border border-2 border-zinc-500 py-6 rounded-xl hover:bg-gray-100 transition"
+            >
+            <Image
+                src="/GoogleCalendar.png"
+                alt="Google Calendar"
+                width={28}
+                height={28}
+            />
+            同步行事曆活動
+            </button>
         </div>
 
-        ):step === 6 ? (
-        // 第七題同步calendar
-        <div className="flex justify-center mb-24">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                {[
-                "#F7F0E8", "#AB8763", "#F4E9E3", "#8F654D", "#F8EDD9",
-                "#6C4B3C", "#EDDFC4", "#423731", "#DDC5A1", "#2F2A24"
-                ].map((color, i) => (
-                <button
-                    key={i}
-                    className="w-36 h-6 rounded-full border focus:outline-none hover:border-2 hover:border-gray hover:shadow-sm"
-                    style={{ backgroundColor: color }}
-                    onClick={goNext}
-                />
-                ))}
-            </div>
-        </div>
 
         ) : current.type === "choice" ? (
         // 選擇題
         <div className="space-y-6 mb-24 px-14 font-bold text-[#3E3E3E]">
-            {current.options.map((opt, idx) => (
+            {current.options?.map((opt, idx) => (
             <button
                 key={idx}
                 className="w-full border border-[#3E3E3E] py-2 rounded-xl hover:bg-gray-100 transition"
@@ -284,14 +359,14 @@ export default function SurveyPage() {
         
         ) : current.type === "input" && (
         // 輸入框
-        <div className="mb-8 px-20">
+        <div className="mb-24 px-20">
             <input
             type="text"
             placeholder={current.placeholder}
             className="w-full border-b border-black text-center py-2 focus:outline-none focus:border-black mb-6"
             />
             <button
-            className="w-full text-white bg-[#3E3E3E] font-semibold py-2 rounded-xl hover:bg-gray-600 transition mb-24"
+            className="w-full text-white bg-[#3E3E3E] font-semibold py-2 rounded-xl hover:bg-gray-600 transition"
             onClick={goNext}
             >
             確認
@@ -308,7 +383,14 @@ export default function SurveyPage() {
             <span>上一題</span>
           </button>
           <button onClick={goNext} className="flex items-center space-x-1">
-            <span>{step === 2 ? "跳過膚色選項" : step === 4 ? "不提供照片" : step === 5 ? "跳過風格選項" : step === 6 ? "跳過同步" : step === 7 ? "不提供照片" :  `不提供${current.title.replace("你的", "")}`}</span>
+            <span>
+                {step === 2 ? "跳過膚色選項" :
+                 step === 4 ? "不提供照片" : 
+                 step === 5 ? "跳過風格選項" : 
+                 step === 6 ? "跳過同步" : 
+                 step === 7 ? "不提供照片" :  
+                 `不提供${current.title.replace("你的", "")}`}
+            </span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
