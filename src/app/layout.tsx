@@ -8,15 +8,22 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Chatbot',
-  description: 'A clean Next.js starter for fashion e-commerce',
+  description: 'A clean Next.js starter for fashion chatbot',
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        {/* 引入 Google Material Icons */}
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
         {children}
       </body>
     </html>
-  )
+  );
 }

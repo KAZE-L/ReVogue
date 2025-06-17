@@ -73,7 +73,7 @@ export default function ChatbotPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-x-hidden">
-      <Header onToggleSidebar={() => setSidebarOpen((v) => !v)} />
+      <Header onToggleSidebar={() => setSidebarOpen((v) => !v)} goHome={goHome} />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} goHome={goHome} />
 
       <div

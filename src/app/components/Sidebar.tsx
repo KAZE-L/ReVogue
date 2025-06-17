@@ -1,8 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { X, Database, Shirt, ChevronDown, ChevronUp, MoreHorizontal, Edit } from 'lucide-react';
+import { X, Database, Shirt, ChevronDown, ChevronUp, MoreHorizontal, Edit, Settings } from 'lucide-react';
 import Image from 'next/image';
+
 
 const chatRecords: Record<string, { date: string; title: string }[]> = {
   '五月, 2025': [
@@ -27,6 +29,8 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
+  const router = useRouter();
+  
   const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -66,15 +70,22 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
           <Image src="/user.png" alt="User photo" width={32} height={32} className="rounded-full" />
           <span className="text-sm font-semibold">USER USER</span>
         </div>
-        <button aria-label="Edit User Info">
-          <Edit className="w-4 h-4 text-gray-600" />
-        </button>
       </div>
 
       <div
         onClick={() => {
-          onClose();
           goHome();
+          onClose();
+        }}
+        className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
+      >
+        <Edit className="w-5 h-5" /> 新對話
+      </div>
+
+      <div
+        onClick={() => {
+          router.push('/userData');
+          onClose();
         }}
         className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
       >
@@ -83,12 +94,12 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
 
       <div
         onClick={() => {
+          router.push('/setting');
           onClose();
-          // 若你有導向功能，可以用 router.push('/style-filter')
         }}
         className="flex items-center px-4 py-3 text-sm text-zinc-600 gap-3 cursor-pointer"
       >
-        <Shirt className="w-5 h-5" /> 風格篩選
+        <Settings className="w-5 h-5" /> 設定
       </div>
 
       <div className="overflow-y-auto h-[calc(100%-12rem)] px-4 py-3">
