@@ -912,8 +912,21 @@
   }
 }
 
-
 /* 自定義的實用工具 */
 @layer utilities {
-  /* 你可以在這裏添加一些額外的工具 */
+  /* 你可以在這裡繼續新增其他全域樣式 */
+
+  .survey-skin-option {
+    width: 180px;
+    height: 30px;
+    border-radius: 9px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .survey-skin-option.selected {
+    border: 2.5px solid #222;
+    box-shadow: 0 0 0 2px #2222;
+  }
 }
