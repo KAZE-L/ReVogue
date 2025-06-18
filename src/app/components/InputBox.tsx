@@ -23,27 +23,26 @@ export default function InputBox({ onSend }: { onSend: (message: string) => void
   };
 
   return (
-    <div className="border border-gray-300 rounded-2xl p-3 bg-white">
+    <div className="inputbox-container">
       <textarea
         ref={textareaRef}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="詢問任何穿搭建議"
-        className="w-full resize-none p-2 text-gray-700 placeholder-gray-400 bg-transparent focus:outline-none overflow-y-auto"
-        style={{ maxHeight: MAX_HEIGHT }}
+        className="inputbox-textarea"
       />
-      <div className="flex items-center justify-between">
-        <div className="flex space-x-2 ml-2">
-          <button className="text-gray-400 hover:text-black border border-gray-400 rounded-full p-1">
+      <div className="inputbox-actions">
+        <div className="inputbox-btn-group">
+          <button className="inputbox-icon-btn">
             <Camera size={20} />
           </button>
-          <button className="text-gray-400 hover:text-black border border-gray-400 rounded-full p-1">
+          <button className="inputbox-icon-btn">
             <ImageIcon size={20} />
           </button>
         </div>
         <button
           type="button"
-          className="bg-black text-white rounded-full p-2 hover:opacity-90"
+          className="inputbox-send-btn"
           onClick={handleSend}
         >
           <ArrowUp size={18} />
