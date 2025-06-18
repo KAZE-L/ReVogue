@@ -61,7 +61,7 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="bg-gray-800 text-white py-2 rounded-xl font-medium font-bold"
+          className="bg-[#3E3E3E] text-white py-2 rounded-xl font-medium font-bold"
         >
           登入
         </button>
