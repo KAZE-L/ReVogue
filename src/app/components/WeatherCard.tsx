@@ -3,7 +3,7 @@ import { CloudHail } from "lucide-react";
 export default function WeatherCard({ onTrigger }: { onTrigger: () => void }) {
   return (
     <div className="bg-blue-300 rounded-xl p-5 flex flex-col justify-between" style={{ minHeight: '150px' }}>
-      {/* 第一行：天气图标和文字 */}
+      {/* 第一行：天气圖標和文字 */}
       <div className="flex items-start gap-4">
         <CloudHail className="text-white flex-shrink-0" size={64} />
         <div>
@@ -12,7 +12,7 @@ export default function WeatherCard({ onTrigger }: { onTrigger: () => void }) {
         </div>
       </div>
 
-      {/* 第二行：温度和按钮 */}
+      {/* 第二行：温度和按鈕*/}
       <div className="flex justify-between items-end">
         <span className="text-3xl text-white font-bold">27℃</span>
         <button
