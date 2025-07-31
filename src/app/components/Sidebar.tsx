@@ -1,10 +1,13 @@
+// components/Sidebar.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { X, Database, Shirt, ChevronDown, ChevronUp, MoreHorizontal, Edit, Settings } from 'lucide-react';
+import {
+  X, Database, Settings, Edit,
+  ChevronDown, ChevronUp, MoreHorizontal
+} from 'lucide-react';
 import Image from 'next/image';
-
 
 const chatRecords: Record<string, { date: string; title: string }[]> = {
   '五月, 2025': [
@@ -30,7 +33,6 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
   const router = useRouter();
-  
   const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -46,32 +48,29 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
   };
 
   return (
-    <div
-      className={`sidebar-root${isOpen ? ' open' : ''}`}
-    >
+    <div className={`sidebar-root${isOpen ? ' open' : ''}`}>
       <div className="sidebar-header">
         <h1
-          className="sidebar-title"
+          className="sidebar-title cursor-pointer"
           onClick={() => {
             goHome();
           }}
         >
           ReVogue
         </h1>
-        <button onClick={onClose} className="sidebar-close-btn" aria-label="Close Sidebar">
+        <button onClick={onClose} className="sidebar-close-btn">
           <X className="w-6 h-6" />
         </button>
       </div>
 
       <div className="sidebar-user">
-  <Image src="/user.png" alt="User photo" width={32} height={32} className="sidebar-user-img" />
-  <span className="sidebar-user-name">USER USER</span>
-</div>
+        <Image src="/user.png" alt="User" width={32} height={32} className="sidebar-user-img" />
+        <span className="sidebar-user-name">USER USER</span>
+      </div>
 
       <div
         onClick={() => {
           goHome();
-          onClose();
         }}
         className="sidebar-nav-item"
       >
@@ -107,11 +106,7 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
               onClick={() => toggleMonth(month)}
             >
               <div className="sidebar-record-month-label">{month}</div>
-              {expandedMonths[month] ? (
-                <ChevronUp className="w-4 h-4 text-gray-500" />
-              ) : (
-                <ChevronDown className="w-4 h-4 text-gray-500" />
-              )}
+              {expandedMonths[month] ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </div>
             {expandedMonths[month] && (
               <div className="sidebar-record-list">
@@ -121,8 +116,8 @@ export default function Sidebar({ isOpen, onClose, goHome }: SidebarProps) {
                       <div className="sidebar-record-date">{date}</div>
                       <div className="sidebar-record-title">{title}</div>
                     </div>
-                    <button className="sidebar-record-more" aria-label={`More options for ${title}`}>
-                      <MoreHorizontal className="w-4 h-4 text-gray-500" />
+                    <button className="sidebar-record-more">
+                      <MoreHorizontal className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
