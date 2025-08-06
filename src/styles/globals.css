@@ -463,7 +463,7 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 /* 新增內容區域樣式 */
@@ -480,8 +480,8 @@
   width: 100%;
   max-width: 353px;
   padding: 0;
-  gap: 32px;
-   margin: 0 auto 80px; 
+  gap: 24px;
+   margin: 0 auto 60px; 
 }
 
 .modal-option {
@@ -525,11 +525,85 @@
   color: white;
 }
 
-/* 照片列表 */
-.profile-photo-list {
+/* 身高和職業（input） modal */
+.input-container {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 60px;
   align-items: center;
+}
+
+.input {
+  width: 300px;
+  border-bottom: 1px solid #d1d5db;
+  text-align: center;
+  padding: 8px 0;
+  outline: none;
+  font-size: 16px;
+}
+
+.input:focus {
+  border-color: #000;
+}
+
+/* 膚色 modal */
+.skin-color-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.skin-color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: fit-content;
+}
+
+.skin-color-option {
+  width: 120px;
+  height: 24px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.skin-color-option:hover {
+  transform: scale(1.05);
+}
+
+.skin-color-option.selected {
+  border: 2px solid gray;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 照片管理容器 */
+.photo-manager {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* 滾動容器 */
+.photo-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none; /* 隱藏Firefox滾動條 */
+  &::-webkit-scrollbar {
+    display: none; /* 隱藏Chrome/Safari滾動條 */
+  }
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 改為5列 */
+  gap: 12px;
+  width: 100%;
+  padding: 8px;
 }
 
 .photo-item {
@@ -559,6 +633,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  z-index: 1;
 }
 
 .upload-btn {

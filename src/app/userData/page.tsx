@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { ChevronRight, Database, X, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 type UserData = {
   gender: string;
@@ -30,13 +31,19 @@ export default function UserProfilePage() {
     height: '170 cm',
     skinColor: '#f7e6c4',
     occupation: '學生',
-    photos: ['/sample1.jpg', '/sample2.jpg', '/sample3.jpg'],
+    photos: ['/sample1.jpg', '/sample2.jpg', '/sample3.jpg', '/sample4.jpg', '/sample5.jpg', '/sample6.jpg', '/sample7.jpg'],
     stylePreferences: ['極簡', '知性通勤'],
     schedule: '未授權',
     wardrobe: ['/closet1.jpg', '/closet2.jpg', '/closet3.jpg']
   });
 
-  const styleOptions = ['極簡', '知性通勤', '日系', '街頭', '復古', '運動風', '甜美', '中性'];
+  const styleOptions = ["極簡", "知性通勤", "日系", "都會休閒", "Y2K復古未來感", "戶外機能",
+                "英倫學院", "韓系", "波西米亞", "時尚實驗", "文青", "法式優雅", "古著",
+                "日系古著", "中性", "蒲公英系森系", "暗黑哥德", "未來工業", "視覺系", "嘻哈風",
+                "輕便", "休閑", "美式", "運動風", "工裝風", "Cyberpunk", "洛麗塔", "懶人舒適風", "浪漫唯美", "輕熟氣質",
+                "甜美可愛", "軍裝風", "民族風", "蒸汽龐克", "水手風", "海島度假風",
+                "溫柔姐姐風", "原宿風", "名媛風", "美式復古", "鄉村田園", "工業風",
+                "藝術系", "山系", "帥氣皮衣風", "賽博和風", "中式新潮"];
 
 
   const goHome = () => {
@@ -248,11 +255,77 @@ export default function UserProfilePage() {
         </Modal>
       )}
 
+      {/* 身高 Modal */}
+      {editingField === 'height' && (
+        <Modal
+          title="你的身高"
+          description="身高資訊有助於掌握穿搭比例，例如衣服長度、褲款選擇，提升整體視覺平衡感。"
+          onClose={() => setEditingField(null)}
+          onSave={() => handleSave(userData.height)}
+        >
+          <div className="input-container">
+            <input
+              type="text"
+              value={userData.height}
+              onChange={(e) => setUserData({...userData, height: e.target.value})}
+              placeholder="輸入身高（例如：170 cm）"
+              className="input"
+            />
+          </div>
+        </Modal>
+      )}
+
+      {/* 膚色選項 Modal */}
+      {editingField === 'skinColor' && (
+        <Modal
+          title="你的膚色"
+          description="膚色是色彩鑑定的關鍵依據，能幫助我們挑選更適合你的主色與配件色，提升整體氣質與和諧感。"
+          onClose={() => setEditingField(null)}
+          onSave={() => handleSave(userData.skinColor)}
+        >
+          <div className="skin-color-modal">
+            <div className="skin-color-grid">
+              {[
+                "#F7F0E8", "#AB8763", "#F4E9E3", "#8F654D", "#F8EDD9",
+                "#6C4B3C", "#EDDFC4", "#423731", "#DDC5A1", "#2F2A24"
+              ].map((color, i) => (
+                <button
+                  key={i}
+                  className={`skin-color-option ${userData.skinColor === color ? 'selected' : ''}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setUserData({...userData, skinColor: color})}
+                />
+              ))}
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* 職業 Modal */}
+      {editingField === 'occupation' && (
+        <Modal
+          title="你的職業"
+          description="根據你的工作性質，我們會建議適合的穿搭語言與風格，展現你的專業與個性。"
+          onClose={() => setEditingField(null)}
+          onSave={() => handleSave(userData.occupation)}
+        >
+          <div className="input-container">
+            <input
+              type="text"
+              value={userData.occupation}
+              onChange={(e) => setUserData({...userData, occupation: e.target.value})}
+              placeholder="輸入職業（例如：學生）"
+              className="input"
+            />
+          </div>
+        </Modal>
+      )}
+
       {/* 風格偏好 Modal */}
       {editingField === 'stylePreferences' && (
         <Modal
-          title="風格偏好"
-          description="選擇你喜歡的穿搭風格（可多選）"
+          title="你的風格偏好"
+          description="我們希望打造你「自己也會愛上」的穿搭風格，你可以勾選喜歡的風格參考。"
           onClose={() => setEditingField(null)}
           onSave={() => {
             handleSave(selectedStyles);
@@ -275,18 +348,16 @@ export default function UserProfilePage() {
 
       {/* 照片上傳/衣櫃 Modal */}
       {(editingField === 'photos' || editingField === 'wardrobe') && (
-        <Modal
-          title={editingField === 'photos' ? '照片上傳' : '你的衣櫃'}
-          description={editingField === 'photos' 
-            ? '上傳你的個人照片' 
-            : '管理你的衣櫃照片'}
-          onClose={() => setEditingField(null)}
-          onSave={() => {
-            // 這裡實際處理照片上傳邏輯
-            setEditingField(null);
-          }}
-        >
-          <div className="photo-manager">
+      <Modal
+        title={editingField === 'photos' ? '上傳你的照片' : '你的衣櫃'}
+        description={editingField === 'photos' 
+          ? '上傳你平常的全身照或自拍照，我們會自動分析體型與膚色，幫助顧問們提供更準確建議。' 
+          : '如果你已經有一些常穿的衣物，我們可以依據你衣櫃內容來推薦實際可行的穿搭組合。'}
+        onClose={() => setEditingField(null)}
+        onSave={() => setEditingField(null)}
+      >
+        <div className="photo-manager">
+          <div className="photo-scroll-container">
             <div className="photo-grid">
               {(editingField === 'photos' ? userData.photos : userData.wardrobe).map((photo, i) => (
                 <div key={i} className="photo-item">
@@ -300,20 +371,21 @@ export default function UserProfilePage() {
                 </div>
               ))}
             </div>
-            <label className="upload-area">
-              <Plus size={24} />
-              <span>點擊上傳新照片</span>
-              <input 
-                type="file" 
-                multiple 
-                accept="image/*" 
-                onChange={(e) => handlePhotoUpload(e, editingField as 'photos' | 'wardrobe')} 
-                style={{ display: 'none' }} 
-              />
-            </label>
           </div>
-        </Modal>
-      )}
+          <label className="upload-area">
+            <Plus size={24} />
+            <span>點擊上傳新照片</span>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*" 
+              onChange={(e) => handlePhotoUpload(e, editingField as 'photos' | 'wardrobe')} 
+              style={{ display: 'none' }} 
+            />
+          </label>
+        </div>
+      </Modal>
+    )}
     </div>
   );
 }
@@ -352,7 +424,22 @@ function Modal({
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2 className="modal-title">{title}</h2>
+        <div className="modal-header">
+          <div className="modal-star-container">
+            <Image 
+              src="/star.svg" 
+              alt="star" 
+              width={20} 
+              height={20} 
+              className="modal-star"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+          </div>
+           <h2 className="modal-title">{title}</h2>
+          </div>
         <p className="modal-description">{description}</p>
         
         {children}
