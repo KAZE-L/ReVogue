@@ -386,9 +386,50 @@ export default function UserProfilePage() {
         </div>
       </Modal>
     )}
+
+    {/* 行程 Modal */}
+    {editingField === 'schedule' && (
+      <Modal
+        title="你的行程"
+        description="若你願意，我們可以讀取你的今日日程（Google Calendar），根據天氣、地點與行程內容進行穿搭建議。"
+        onClose={() => setEditingField(null)}
+        onSave={() => handleSave(userData.schedule)}
+      >
+        <div className="calendar-sync-container">
+          {userData.schedule === '未授權' ? (
+            <button
+              onClick={() => setUserData({...userData, schedule: '已授權'})}
+              className="calendar-sync-btn"
+            >
+              <div className="flex items-center justify-center gap-3">
+                <Image
+                  src="/GoogleCalendar.png"
+                  alt="Google Calendar"
+                  width={28}
+                  height={28}
+                />
+                <span>同步行事曆活動</span>
+              </div>
+            </button>
+          ) : (
+            <div className="calendar-authorized">
+              <span className="text-green-600">✓ 已授權</span>
+              <button 
+                onClick={() => setUserData({...userData, schedule: '未授權'})}
+                className="text-sm text-gray-500 underline mt-2"
+              >
+                取消授權
+              </button>
+            </div>
+          )}
+        </div>
+      </Modal>
+    )}
     </div>
   );
 }
+
+
 
 function Item({ label, value, custom, onClick }: { 
   label: string; 
